@@ -19,7 +19,7 @@ const AddRecipe = () => {
             setLoading(true);
             if(edit){
                 const finalData = {...data, dishUploader: image, ingredients:data.ingredients.replaceAll("\n",";"),method:data.method.replaceAll("\n",";"),tags:data.tags.replaceAll("\n",";")};
-                const resData = await axios.patch(`${API_URL}/api/editRecipe`,finalData);
+                const resData = await axios.patch(`${API_URL}api/editRecipe`,finalData);
                 if(resData.status === 200){
                     reset();
                     setImage("");
@@ -30,7 +30,7 @@ const AddRecipe = () => {
                     window.alert("Failed to save the data");
             } else {
                 const finalData = {...data, dishUploader: image};
-                const resData = await axios.post(`${API_URL}/api/recipe`,finalData);
+                const resData = await axios.post(`${API_URL}api/recipe`,finalData);
                 if(resData.status === 200){
                     reset();
                     setImage("");
@@ -59,7 +59,7 @@ const AddRecipe = () => {
         try{
             setLoading(true);
             setDishName(e.target.value);
-            const resData = await axios.post(`${API_URL}/api/recipeData`,{dish:e.target.options[e.target.selectedIndex].text});
+            const resData = await axios.post(`${API_URL}api/recipeData`,{dish:e.target.options[e.target.selectedIndex].text});
             if(resData.status === 200){
                 const dishData = resData.data.dish;
                 setValue("dishName", dishData.dishName);
@@ -83,7 +83,7 @@ const AddRecipe = () => {
          
     const getDishList = async()=>{
         try{
-            const dishList = await axios.get(`${API_URL}/api/getList`)
+            const dishList = await axios.get(`${API_URL}api/getList`)
             if(dishList.status=== 200)
                 setDishList(dishList.data.dishes);
         } catch (err){

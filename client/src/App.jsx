@@ -18,7 +18,7 @@ function App() {
   useEffect(()=>{
     const fetchDishes = async()=>{
       try{
-        const resData = await axios.get(`${API_URL}/api/get`);
+        const resData = await axios.get(`${API_URL}api/get`);
         if(resData.status === 200)
           setDishes(resData.data.dishes)
       } catch (err){
