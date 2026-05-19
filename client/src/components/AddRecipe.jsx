@@ -3,6 +3,7 @@ import {useForm} from 'react-hook-form'
 import axios from "axios";
 import Preloader from './utils/Preloader.jsx';
 import { useNavigate } from 'react-router';
+import imageCompression from "browser-image-compression"
 import ("../assets/styles/addrecipe.css")
 const API_URL = import.meta.env.VITE_API_URL;
 const AddRecipe = () => {
@@ -45,15 +46,26 @@ const AddRecipe = () => {
             setLoading(false);
         }
     }
-    const uploadImage =(e) => {
+    const uploadImage =async (e) => {
         const file= e.target.files[0];
         if(!file)
             return;
-        const uploadedImage = new FileReader();
-            uploadedImage.onload = () => {
-            setImage(uploadedImage.result);
-        };
-        uploadedImage.readAsDataURL(file);
+        try{
+            const compressedFile = await imageCompression(file, {
+                maxSizeMB: 0.9,
+                maxWidthOrHeight: 700,
+                useWebWorker: true,
+            });
+            const uploadedImage = new FileReader();
+            uploadedImage.readAsDataURL(compressedFile);
+            uploadedImage.onloadend = () => {
+                const base64 = uploadedImage.result;
+                const trimmedBase64 = base64.split(",")[1];
+                setImage(trimmedBase64);
+            };
+        } catch (error){
+            window.error("Some error has occurred")
+        }
     }
     const fetchData = async (e)=>{
         try{
@@ -92,8 +104,6 @@ const AddRecipe = () => {
             window.alert("Unable to fetch the data");
         }  
     }       
-    
-    
     useEffect(()=>{
         if(!edit){
             setDish(null);
@@ -152,7 +162,7 @@ const AddRecipe = () => {
                                 </div>
                             </div>
                             <div className="iamgeContainer" style={{"maxHeight": "500px"}}>
-                                {image && image!== null && <img src={image}/>}
+                                {image && image!== null && <img src={`data:image/jpeg;base64,${image}`}/>}
                             </div>
                         </div>
                         <div className="submit-button-container" style={{"width": "100%","display":"block"}}>
