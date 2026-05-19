@@ -80,6 +80,10 @@ const AddRecipe = () => {
             setLoading(false);
         }
     }
+
+    useEffect(()=>{
+        getDishList();
+    },[])
          
     const getDishList = async()=>{
         try{
@@ -90,7 +94,7 @@ const AddRecipe = () => {
             window.alert("Unable to fetch the data");
         }  
     }       
-    getDishList();
+    
     
     useEffect(()=>{
         if(!edit){
