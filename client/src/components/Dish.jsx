@@ -7,7 +7,7 @@ import DishesList from "./utils/DishesList.jsx";
 const Dish = () => {
     const {dishes,setDishes} = useContext(DishesList);
     const { name } = useParams();
-    const { speak, pause, resume } = useSpeech();
+    const { speak, pause, resume, stop } = useSpeech();
     const [player, setPlayer] = useState({
         status: "idle",
         section: null,
@@ -40,9 +40,13 @@ const Dish = () => {
         if (player.section !== section) return <i className="fas fa-play"></i>;
         return player.status === "playing" ? <i className="fas fa-pause"></i> : <i className="fas fa-play"></i>;
     };
+    const handleClick = () =>{
+        stop();
+        navigate("/");
+    }
     return (
         <div className="dish row">
-            <i className="fa fa-arrow-left cursor-pointer" onClick={()=>navigate("/")}></i>
+            <i className="fa fa-arrow-left cursor-pointer" onClick={handleClick}></i>
             {dishes.map((dish) => dish.dishName === name ? (
                 <div key={dish.name}>
                     <h2 className="dish-name">{dish.dishName}</h2>

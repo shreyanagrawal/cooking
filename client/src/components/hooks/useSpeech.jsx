@@ -76,10 +76,19 @@ const useSpeech = () => {
         synthRef.current.resume();
         playNext();
     };
+    const stop = () => {
+        isPausedRef.current = false;
+        isSpeakingRef.current = false;
+        queueRef.current = [];
+        indexRef.current = 0;
+
+        synthRef.current.cancel();
+    };
     return {
         speak,
         pause,
         resume,
+        stop,
     };
 };
 
