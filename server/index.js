@@ -13,7 +13,7 @@ app.use(express.urlencoded({
     limit: "50mb"
 }));
 
-app.post("api/recipe" ,async(req,res)=>{
+app.post("/api/recipe" ,async(req,res)=>{
     try{
         const dish = req.body;
         const resData = await new dishModel(dish).save();
@@ -27,7 +27,7 @@ app.post("api/recipe" ,async(req,res)=>{
     }
 });
 
-app.post("api/recipeData" ,async(req,res)=>{
+app.post("/api/recipeData" ,async(req,res)=>{
     const dishName = req.body.dish
     try{
         const dish = await dishModel.findOne({dishName});
@@ -65,7 +65,7 @@ app.get("/api/get", async(req,res)=>{
     }
 });
 
-app.patch('api/editRecipe', async (req, res) => {
+app.patch('/api/editRecipe', async (req, res) => {
     try {
         const { name } = req.body.dishName;
         const updatedDish = await dishModel.findOneAndUpdate(name,
