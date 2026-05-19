@@ -3,6 +3,11 @@
     flex-wrap: wrap;
     margin: 50px 0px;
 }
+@media only screen and (max-width: 991px){
+    .recipe-card{
+        margin: 0 auto;;
+    }
+}
 .recipe-card {
     max-width: 300px;
     width: 100%;
@@ -47,7 +52,7 @@ span.filter-tag{
     border: 1px solid;
 }
 .filter-container{
-    gap: 5px 8px;
+    gap: 12px 8px;
 }
 .tag-filters {
     max-height: 0;

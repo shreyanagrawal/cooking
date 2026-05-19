@@ -22,7 +22,7 @@ const Dishes = () => {
         <p className="filter d-flex mb-0 justify-content-space-between align-items-center"><span>Filters</span><i className="fa fa-caret-down cursor-pointer" onClick={()=>setShowFilter(!showFilter)}></i></p>
         <div className={`tag-filters ${showFilter ? "show" : "hide"}`}>
           <section className="filters">
-            <div className="filter-container d-flex flex-wra">
+            <div className="filter-container d-flex flex-wrap">
               {
                 filters.map((filter)=>(
                   <span key={`f_${crypto.randomUUID()}`}className="filter-tag cursor-pointer" onClick={()=>setFilter(filter)}>{filter}</span>
@@ -33,22 +33,25 @@ const Dishes = () => {
         </div>
       </div>
       <input type="search" className="search" value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Search your dish here..."/>
-          <div className="recipe-parent d-flex cursor-pointer">
-            {sortedAndFilteredDishes.map(dish=>(
-                <div key={crypto.randomUUID()} className="recipe-card">
-                  <Link  to={`/dish/${dish.dishName}`}>
-                    <div className="image-container">
-                      <img src={dish.dishUploader}/>
-                    </div>
-                    <p className="title">{dish.dishName}</p>
-                    <p className="tag-container d-flex flex-wrap">{dish.tags.split(';').map((tag)=>(
-                      <span key={`t_${crypto.randomUUID()}`}className="tag">{tag}</span>
-                    ))}</p>
-                  </Link>
-                </div>
-            ))}
-        </div>
-    </div>
+          <div className="recipe-container">
+            <div className="recipe-parent d-flex cursor-pointer">
+              {sortedAndFilteredDishes.map(dish=>(
+                  <div key={crypto.randomUUID()} className="recipe-card">
+                    <Link  to={`/dish/${dish.dishName}`}>
+                      <div className="image-container">
+                        <img src={dish.dishUploader}/>
+                      </div>
+                      <p className="title">{dish.dishName}</p>
+                      <p className="tag-container d-flex flex-wrap">{dish.tags.split(';').map((tag)=>(
+                        <span key={`t_${crypto.randomUUID()}`}className="tag">{tag}</span>
+                      ))}</p>
+                    </Link>
+                  </div>
+              ))}
+            </div>
+          </div>
+          
+      </div>
   )
 }
 export default Dishes

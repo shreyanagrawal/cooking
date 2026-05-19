@@ -14,12 +14,19 @@
     pointer-events: none;
     cursor: not-allowed;
 }
+@media all and (max-width: 991px){
+    .cooking-form{
+        max-width: 800px;
+        width: 100%;
+    }
+}
 .cooking-form{
     flex-direction: column;
     gap: 20px;
     margin-top: 20px;
     padding: 20px 50px;
-    width: 50%;
+    width: 100%;
+    max-width: 450px;
 }
 .cooking-form textarea{
     min-height: 100px;
@@ -56,10 +63,19 @@ body[data-theme="light"] form button:hover{
     background-color: var(--dark-color);
     color: var(--light-color);
 }
+.iamgeContainer{
+    max-width: 450px;
+    width: 100%;
+}
 .iamgeContainer img{
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+@media all and (max-width: 991px){
+    .iamgeContainer{
+        padding: 100px 0px;
+    }
 }
 .error{
     display: block;

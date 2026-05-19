@@ -80,11 +80,9 @@ const AddRecipe = () => {
             setLoading(false);
         }
     }
-
     useEffect(()=>{
         getDishList();
-    },[])
-         
+    },[])    
     const getDishList = async()=>{
         try{
             const dishList = await axios.get(`${API_URL}api/getList`)
@@ -115,7 +113,6 @@ const AddRecipe = () => {
                     <form onSubmit={handleSubmit(submitData)}>
                         <div className="select-container">
                             <i className="fa fa-pencil" onClick={()=>setEdit(!edit)} style={{"marginRight":"10px", "cursor": "pointer"}}></i>
-
                             <select name="dishes" className="select-dish" onChange={(e)=>fetchData(e)} disabled={!edit} value={dishName}>
                                 <option value="" disabled selected>Select Dish</option>
                                 {dishList && dishList.map((dish)=>(
@@ -123,7 +120,7 @@ const AddRecipe = () => {
                                 ))}
                             </select>
                         </div>
-                        <div className="d-flex">
+                        <div className="d-flex flex-wrap">
                             <div className="d-flex cooking-form">
                                 <div className="imageUplaoder">
                                     <input type="file" name="dishUploader" className="dishUploader"  style={{"border":"0px solid"}}{...register("dishUploader",{
@@ -154,7 +151,7 @@ const AddRecipe = () => {
                                     {errors.tags && <span className="error">{errors.tags.message}</span>}
                                 </div>
                             </div>
-                            <div className="iamgeContainer" style={{"width": "50%", "padding": "100px 0px", "maxHeight": "500px"}}>
+                            <div className="iamgeContainer" style={{"maxHeight": "500px"}}>
                                 {image && image!== null && <img src={image}/>}
                             </div>
                         </div>
