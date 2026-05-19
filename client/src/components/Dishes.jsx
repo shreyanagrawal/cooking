@@ -2,7 +2,6 @@ import React, { useContext, useMemo, useState } from 'react'
 import DishesList from './utils/DishesList';
 import '../assets/styles/style.css';
 import { Link } from 'react-router';
-import { dishesMap } from './utils/dishes';
 const Dishes = () => {
   const {dishes,setDishes} = useContext(DishesList);
   const [filter,setFilter] = useState('all');

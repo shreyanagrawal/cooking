@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {useForm} from 'react-hook-form'
-import { dishesMap } from './utils/dishes.js';
 import axios from "axios";
 import Preloader from './utils/Preloader.jsx';
 import { useNavigate } from 'react-router';

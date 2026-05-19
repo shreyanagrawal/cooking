@@ -1,4 +1,3 @@
-import { dishesMap } from "./utils/dishes.js";
 import "../assets/styles/dish.css";
 import { useNavigate, useParams } from "react-router";
 import React, { useContext, useState } from "react";
