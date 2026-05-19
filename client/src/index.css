@@ -20,8 +20,6 @@ a{
     height: 100vh;
     position: relative;
     width: 100%;
-    background-color: #00000099;
-    opacity: 0.9;
 }
 .spinner {
     width: 100px;
