@@ -1,0 +1,52 @@
+body{
+    overflow-x: hidden;
+}
+body[data-theme="dark"]{
+    background-color:  var(--dark-color);
+    color: var(--light-color);
+}
+body[data-theme="light"]{
+    background-color: var(--light-color);
+    color:  var(--dark-color);
+}
+.container{
+    margin: 5rem 0;
+}
+a{
+    color: inherit !important;
+    text-decoration: none !important;
+}
+.preloader{
+    height: 100vh;
+    position: relative;
+    width: 100%;
+    background-color: #00000099;
+    opacity: 0.9;
+}
+.spinner {
+    width: 100px;
+    height: 100px;
+    border: 6px solid var(--light-color);
+    border-top-color: green;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.spinner span {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--light-color);
+    animation: reverseSpin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes reverseSpin {
+    to {
+        transform: rotate(-360deg);
+    }
+}

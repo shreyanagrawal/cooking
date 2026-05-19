@@ -1,0 +1,110 @@
+:root{
+    --dark-color: #333;
+    --light-color: #fff;
+    --dark-shadow: 0,0,0,0.3;
+    --light-shadow: 255,255,255,0.3;
+    overflow-x: hidden;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.flex-wrap{
+    flex-wrap: wrap;
+}
+.justify-content-space-between{
+    justify-content: space-between;
+}
+.align-items-center{
+    align-items: center;
+}
+.justify-content-center{
+    justify-content: center;
+}
+.mb-0{
+    margin-bottom: 0px;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--light-color);
+    border: 1px solid var(--dark-color);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--dark-color);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+input:checked + .slider::before{
+    background-color: var(--light-color);
+}
+input:checked + .slider {
+    background-color: var(--dark-color);
+    border: 1px solid var(--light-color);
+}
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+.slider.round {
+    border-radius: 34px;
+}
+.slider.round:before {
+    border-radius: 50%;
+}
+.icons {
+    position: absolute;
+}
+.sun{
+    bottom: 10px;
+    left: -25px;
+}
+.moon{
+    bottom: 12px;
+    right: -25px;
+}
+.add-dish{
+    position: absolute;
+    bottom: 0px;
+    right: 30px;
+    border: 1px solid;
+    padding: 20px;
+    border-radius: 50%;
+    box-shadow: 0px 2px 10px;
+    cursor: pointer;
+    animation: waBounce 2s ease-in-out infinite;
+}
+@keyframes waBounce {
+	0%, 100% {
+    	transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-8px);
+	}
+}
+.add-dish i{
+    font-size: 25px;
+}

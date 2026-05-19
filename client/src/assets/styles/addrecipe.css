@@ -1,0 +1,67 @@
+.select-container{
+    width: max-content;
+    margin: 20px auto 0;
+}
+.select-dish{
+    background-color: transparent;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid;
+    color: inherit;
+}
+.select-dish:disabled, .cooking-form input:disabled, form button:disabled{
+    opacity: 0.3;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+.cooking-form{
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+    padding: 20px 50px;
+    width: 50%;
+}
+.cooking-form textarea{
+    min-height: 100px;
+    width: 100%;
+    resize: vertical;
+    overflow-y: hidden;
+}
+.cooking-form input, .cooking-form textarea{
+    padding: 10px;
+    background-color: transparent;
+    border-radius: 10px;
+    border: 1px solid;
+    color: inherit;
+}
+.cooking-form div{
+    flex-direction: column;
+    gap: 20px;
+}
+form button{
+    padding: 10px 20px;
+    background-color: transparent;
+    border-radius: 10px;
+    border: 1px solid;
+    color: inherit;
+    margin: 0 auto;
+    display: block;
+    width: 200px;
+}
+body[data-theme="dark"] form button:hover{
+    background-color: var(--light-color);
+    color: var(--dark-color);
+}
+body[data-theme="light"] form button:hover{
+    background-color: var(--dark-color);
+    color: var(--light-color);
+}
+.iamgeContainer img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.error{
+    display: block;
+    color: red;
+}
