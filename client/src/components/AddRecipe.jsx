@@ -47,23 +47,29 @@ const AddRecipe = () => {
             setLoading(false);
         }
     }
+
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.readAsDataURL(file);
+
+            reader.onload = () => resolve(reader.result);
+
+            reader.onerror = reject;
+        });
+    };
+
+
     const uploadImage =async (e) => {
         const file= e.target.files[0];
         if(!file)
             return;
+        
         try{
-            const compressedFile = await imageCompression(file, {
-                maxSizeMB: 0.9,
-                maxWidthOrHeight: 700,
-                useWebWorker: true,
-            });
-            const uploadedImage = new FileReader();
-            uploadedImage.readAsDataURL(compressedFile);
-            uploadedImage.onloadend = () => {
-                const base64 = uploadedImage.result;
-                const trimmedBase64 = base64.split(",")[1];
-                setImage(trimmedBase64);
-            };
+            const base64 = await convertToBase64(file);
+            setImage(base64);
+            
         } catch (error){
             window.error("Some error has occurred")
         }

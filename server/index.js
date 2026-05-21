@@ -3,6 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
+const cloudinary = require("./utils/cloudinaryConfig");
+
 const dishModel = require("./models/dishModel");
 app.use(cors());
 app.use(express.json({
@@ -15,7 +17,11 @@ app.use(express.urlencoded({
 
 app.post("/api/recipe" ,async(req,res)=>{
     try{
-        const dish = req.body;
+        let dish = req.body;
+        console.log(dish);
+        const url = await cloudinaryUploadData(dish.dishUploader);
+        if(url)
+            dish.dishUploader = url;
         const resData = await new dishModel(dish).save();
         if(resData)
             return res.status(200).json({success: true, resData});
@@ -89,6 +95,27 @@ app.patch('/api/editRecipe', async (req, res) => {
         });
     }
 });
+
+const cloudinaryUploadData=async (image)=>{
+    try {
+        console.log(image);
+
+        const uploadedImage =
+            await cloudinary.uploader.upload(
+                image,
+                {
+                    folder: "mern_uploads",
+                }
+            );
+
+        console.log(uploadedImage);
+
+        return uploadedImage.secure_url;
+
+    } catch (err) {
+        return null
+    }
+}
 mongoose.connect(process.env.MONGO_URI);
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
