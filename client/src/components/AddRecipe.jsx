@@ -5,6 +5,7 @@ import Preloader from './utils/Preloader.jsx';
 import { useNavigate } from 'react-router';
 import imageCompression from "browser-image-compression"
 import ("../assets/styles/addrecipe.css")
+import {getImage} from './utils/ImageLoader'; 
 const API_URL = import.meta.env.VITE_API_URL;
 const AddRecipe = () => {
     const [dish,setDish] = useState(null);
@@ -79,7 +80,7 @@ const AddRecipe = () => {
                 setValue("method", dishData.method.replaceAll(';', '\n'));
                 setValue("tags", dishData.tags.replaceAll(';', '\n'));
                 setValue("dishUploader", dishData.dishUploader);
-                setImage(dishData.dishUploader);
+                setImage(getImage(dishData.dishUploader));
                 setDish(dishData);
             } else {
                 setImage("");
@@ -162,7 +163,7 @@ const AddRecipe = () => {
                                 </div>
                             </div>
                             <div className="iamgeContainer" style={{"maxHeight": "500px"}}>
-                                {image && image!== null && <img src={`data:image/jpeg;base64,${image}`}/>}
+                                {image && image!== null && <img src={getImage(image)}/>}
                             </div>
                         </div>
                         <div className="submit-button-container" style={{"width": "100%","display":"block"}}>

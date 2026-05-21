@@ -2,6 +2,8 @@ import React, { useContext, useMemo, useState } from 'react'
 import DishesList from './utils/DishesList';
 import '../assets/styles/style.css';
 import { Link } from 'react-router';
+import { retry } from '@reduxjs/toolkit/query';
+import {getImage} from './utils/ImageLoader';
 const Dishes = () => {
   const {dishes,setDishes} = useContext(DishesList);
   const [filter,setFilter] = useState('all');
@@ -39,7 +41,7 @@ const Dishes = () => {
                   <div key={crypto.randomUUID()} className="recipe-card">
                     <Link  to={`/dish/${dish.dishName}`}>
                       <div className="image-container">
-                        <img src={dish.dishUploader}/>
+                        <img src={getImage(dish.dishUploader)}/>
                       </div>
                       <p className="title">{dish.dishName}</p>
                       <p className="tag-container d-flex flex-wrap">{dish.tags.split(';').map((tag)=>(

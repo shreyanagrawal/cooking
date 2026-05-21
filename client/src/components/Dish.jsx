@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import React, { useContext, useState } from "react";
 import useSpeech from "./hooks/useSpeech";
 import DishesList from "./utils/DishesList.jsx";
+import {getImage} from './utils/ImageLoader';
 
 const Dish = () => {
     const {dishes,setDishes} = useContext(DishesList);
@@ -52,7 +53,7 @@ const Dish = () => {
                     <h2 className="dish-name">{dish.dishName}</h2>
                     <div className="dish-box row d-flex" style={{borderRadius: "30px", alignItems: "center"}}>
                         <div className="col-md-6 col-sm-12 image-container">
-                            <img src={dish.dishUploader} alt={dish.dishName} />
+                            <img src={getImage(dish.dishUploader)} alt={dish.dishName} />
                         </div>
                         <div className="col-md-6 preparation-conatiner" style={{paddingLeft: "40px"}}>
                             <h3 className="ingredients-head">Ingredients</h3>
