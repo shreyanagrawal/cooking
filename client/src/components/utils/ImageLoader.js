@@ -1,9 +1,7 @@
 
 
 export const getImage=(src)=>{
-    if(src.startsWith("data:"))
-        return src
-    else if(src.startsWith("https") || src.startsWith("http"))
+    if(src.startsWith("https") || src.startsWith("http"))
         return src
     else {
         if (src.startsWith("iVBORw0K")) 

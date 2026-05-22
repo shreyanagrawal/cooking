@@ -18,7 +18,6 @@ app.use(express.urlencoded({
 app.post("/api/recipe" ,async(req,res)=>{
     try{
         let dish = req.body;
-        console.log(dish);
         const url = await cloudinaryUploadData(dish.dishUploader);
         if(url)
             dish.dishUploader = url;
@@ -73,8 +72,14 @@ app.get("/api/get", async(req,res)=>{
 
 app.patch('/api/editRecipe', async (req, res) => {
     try {
-        const { name } = req.body.dishName;
-        const updatedDish = await dishModel.findOneAndUpdate(name,
+        const name = req.body.dishName;
+        if(req.body.dishUploade.startsWith("data")){
+             const url = await cloudinaryUploadData(req.body.dishUploader);
+            if(url)
+                req.body.dishUploader = url;
+        }
+       
+        const updatedDish = await dishModel.findOneAndUpdate({dishName: name },
             {
                 $set: req.body
             },
@@ -107,9 +112,6 @@ const cloudinaryUploadData=async (image)=>{
                     folder: "mern_uploads",
                 }
             );
-
-        console.log(uploadedImage);
-
         return uploadedImage.secure_url;
 
     } catch (err) {
