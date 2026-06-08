@@ -16,19 +16,19 @@ function App() {
   const [dishes, setDishes] =useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(()=>{
-    const fetchDishes = async()=>{
-      try{
-        const resData = await axios.get(`${API_URL}api/get`);
-        if(resData.status === 200)
-          setDishes(resData.data.dishes)
-      } catch (err){
-        window.alert("Some error has occurred")
-      } finally {
-        setLoading(false);
-      }
-    }
     fetchDishes();
   },[])
+  const fetchDishes = async()=>{
+    try{
+      const resData = await axios.get(`${API_URL}api/get`);
+      if(resData.status === 200)
+        setDishes(resData.data.dishes)
+    } catch (err){
+      window.alert("Some error has occurred")
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <>
       {loading ?  <Preloader /> :
@@ -38,9 +38,9 @@ function App() {
               <div className="container">
                 <BrowserRouter>
                   <Routes>
-                    {dishes && <Route path="/" element={<Dishes/>}/>}
+                    {dishes && <Route path="/" element={<Dishes />}/>}
                     <Route path="/dish/:name" element={<Dish/>}/>
-                    <Route path="/addDish" element={<AddRecipe/>}/>
+                    <Route path="/addDish" element={<AddRecipe fetchDishes={fetchDishes}/>}/>
                   </Routes>
                   <Link to={"/addDish"} className="add-dish">
                     <i className="fa-solid fa-utensils"></i>

@@ -4,6 +4,7 @@ export const getImage=(src)=>{
     if(src.startsWith("https") || src.startsWith("http"))
         return src
     else {
+        src = src.split(",")[1];
         if (src.startsWith("iVBORw0K")) 
             return "data:image/png;base64,"+src;
         if (src.startsWith("/9j/")) 

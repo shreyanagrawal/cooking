@@ -7,7 +7,7 @@ import imageCompression from "browser-image-compression"
 import ("../assets/styles/addrecipe.css")
 import {getImage} from './utils/ImageLoader'; 
 const API_URL = import.meta.env.VITE_API_URL;
-const AddRecipe = () => {
+const AddRecipe = ({fetchDishes}) => {
     const [dish,setDish] = useState(null);
     const [edit,setEdit] = useState(false);
     const [image, setImage] = useState("");
@@ -27,6 +27,7 @@ const AddRecipe = () => {
                     setImage("");
                     setDishName("");
                     setEdit(false);
+                    fetchDishes();
                 }
                 else 
                     window.alert("Failed to save the data");
@@ -37,6 +38,7 @@ const AddRecipe = () => {
                     reset();
                     setImage("");
                     setDishName("");
+                    fetchDishes();
                 }
                 else 
                     window.alert("Failed to save the data");
@@ -50,6 +52,7 @@ const AddRecipe = () => {
 
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
+            debugger;
             const reader = new FileReader();
 
             reader.readAsDataURL(file);
@@ -62,6 +65,7 @@ const AddRecipe = () => {
 
 
     const uploadImage =async (e) => {
+        debugger;
         const file= e.target.files[0];
         if(!file)
             return;
