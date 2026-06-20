@@ -28,6 +28,7 @@ const AddRecipe = ({fetchDishes}) => {
                     setDishName("");
                     setEdit(false);
                     fetchDishes();
+                    navigate("/");
                 }
                 else 
                     window.alert("Failed to save the data");
@@ -39,6 +40,7 @@ const AddRecipe = ({fetchDishes}) => {
                     setImage("");
                     setDishName("");
                     fetchDishes();
+                    navigate("/");
                 }
                 else 
                     window.alert("Failed to save the data");
@@ -52,7 +54,6 @@ const AddRecipe = ({fetchDishes}) => {
 
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
-            debugger;
             const reader = new FileReader();
 
             reader.readAsDataURL(file);
@@ -65,7 +66,6 @@ const AddRecipe = ({fetchDishes}) => {
 
 
     const uploadImage =async (e) => {
-        debugger;
         const file= e.target.files[0];
         if(!file)
             return;

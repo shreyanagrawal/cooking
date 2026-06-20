@@ -4,10 +4,9 @@ import { ThemeContext } from './components/utils/ThemeContext';
 import Dishes from './components/Dishes';
 import Dish from './components/Dish';
 import ThemeSwitcher from './components/ThemeSwitcher';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import AddRecipe from './components/AddRecipe';
 import DishesList from './components/utils/DishesList';
-import { Link } from 'react-router-dom';
 const API_URL = import.meta.env.VITE_API_URL;
 import axios from 'axios';
 import Preloader from './components/utils/Preloader';
@@ -21,12 +20,13 @@ function App() {
   const fetchDishes = async()=>{
     try{
       const resData = await axios.get(`${API_URL}api/get`);
-      if(resData.status === 200)
+      if(resData.status === 200){
+        setLoading(false);
         setDishes(resData.data.dishes)
+      }
     } catch (err){
-      window.alert("Some error has occurred")
-    } finally {
       setLoading(false);
+      window.alert("Some error has occurred")
     }
   }
   return (
