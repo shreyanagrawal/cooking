@@ -2,7 +2,6 @@ import React, { useContext, useMemo, useState } from 'react'
 import DishesList from './utils/DishesList';
 import '../assets/styles/style.css';
 import { Link } from 'react-router';
-import { retry } from '@reduxjs/toolkit/query';
 import {getImage} from './utils/ImageLoader';
 const Dishes = () => {
   const {dishes,setDishes} = useContext(DishesList);
