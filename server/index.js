@@ -73,7 +73,7 @@ app.get("/api/get", async(req,res)=>{
 app.patch('/api/editRecipe', async (req, res) => {
     try {
         const name = req.body.dishName;
-        if(req.body.dishUploade.startsWith("data")){
+        if(req.body.dishUploader.startsWith("data")){
              const url = await cloudinaryUploadData(req.body.dishUploader);
             if(url)
                 req.body.dishUploader = url;
@@ -103,8 +103,6 @@ app.patch('/api/editRecipe', async (req, res) => {
 
 const cloudinaryUploadData=async (image)=>{
     try {
-        console.log(image);
-
         const uploadedImage =
             await cloudinary.uploader.upload(
                 image,
