@@ -23,13 +23,13 @@ const Dishes = () => {
         <p className="filter d-flex mb-0 justify-content-space-between align-items-center"><span>Filters</span><i className="fa fa-caret-down cursor-pointer" onClick={()=>setShowFilter(!showFilter)}></i></p>
         <div className={`tag-filters ${showFilter ? "show" : "hide"}`}>
           <section className="filters">
-            <div className="filter-container d-flex flex-wrap">
+            <select className="filter-container d-flex flex-wrap selectFilters" onChange={(e)=>setFilter(e.target.value)} value={filter}>
               {
                 filters.map((filter)=>(
-                  <span key={`f_${crypto.randomUUID()}`}className="filter-tag cursor-pointer" onClick={()=>setFilter(filter)}>{filter}</span>
+                  <option key={`f_${crypto.randomUUID()}`}className="cursor-pointer" value={filter}>{filter}</option>
                 ))
               }
-            </div>
+            </select>
           </section>
         </div>
       </div>
