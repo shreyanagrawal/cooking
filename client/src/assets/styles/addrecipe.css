@@ -1,3 +1,6 @@
+.overflowYauto{
+    overflow-y: auto !important;
+}
 .select-container{
     width: max-content;
     margin: 20px auto 0;
@@ -44,6 +47,32 @@
     border-radius: 10px;
     border: 1px solid;
     color: inherit;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+.textArea-form::-webkit-scrollbar {
+    width: 6px;
+}
+
+.textArea-form::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.textArea-form::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.textArea-form:hover {
+    scrollbar-color: #c4b5fd transparent;
+}
+
+.textArea-form:hover::-webkit-scrollbar-thumb {
+    background: #c4b5fd;
+}
+
+.textArea-form:hover::-webkit-scrollbar-thumb:hover {
+    background: #a78bfa;
 }
 .cooking-form div{
     flex-direction: column;

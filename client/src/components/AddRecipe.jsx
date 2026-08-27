@@ -3,129 +3,162 @@ import {useForm} from 'react-hook-form'
 import axios from "axios";
 import Preloader from './utils/Preloader.jsx';
 import { useNavigate } from 'react-router';
-import imageCompression from "browser-image-compression"
 import ("../assets/styles/addrecipe.css")
 import {getImage} from './utils/ImageLoader'; 
 import { resizeTextArea } from '../assets/scripts/script.js';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 const API_URL = import.meta.env.VITE_API_URL;
-const AddRecipe = ({fetchDishes}) => {
+const AddRecipe = () => {
     const [dish,setDish] = useState(null);
     const [edit,setEdit] = useState(false);
     const [image, setImage] = useState("");
-    const [dishList,setDishList]=useState();
-    const [loading, setLoading] = useState(false);
     const [dishName,setDishName] = useState("");
     const navigate = useNavigate("/");
+    const queryClient = useQueryClient();
     const {register, handleSubmit, reset, formState:{errors}, setValue} = useForm();
-    const submitData = async(data)=> {
-        try{
-            setLoading(true);
-            if(edit){
-                const finalData = {...data, dishUploader: image, ingredients:data.ingredients.replaceAll("\n",";"),method:data.method.replaceAll("\n",";"),tags:data.tags.replaceAll("\n",";")};
-                const resData = await axios.patch(`${API_URL}api/editRecipe`,finalData);
-                if(resData.status === 200){
-                    reset();
-                    setImage("");
-                    setDishName("");
-                    setEdit(false);
-                    fetchDishes();
-                    navigate("/");
-                }
-                else 
-                    window.alert("Failed to save the data");
-            } else {
-                const finalData = {...data, dishUploader: image};
-                const resData = await axios.post(`${API_URL}api/recipe`,finalData);
-                if(resData.status === 200){
-                    reset();
-                    setImage("");
-                    setDishName("");
-                    fetchDishes();
-                    navigate("/");
-                }
-                else 
-                    window.alert("Failed to save the data");
-            }
-        } catch (error) {
-            window.alert("Failed to save the data")
-        } finally {
-            setLoading(false);
+
+    const addRecipeMutation = useMutation({ 
+        mutationFn: async (finalData) => { 
+            const response = await axios.post( `${API_URL}api/recipe`, finalData ); 
+            return response.data; 
+        }, 
+        onSuccess: async () => { 
+            reset(); 
+            setImage(""); 
+            setDishName(""); 
+            await queryClient.invalidateQueries({ queryKey: ['dishes'] }); 
+            await queryClient.invalidateQueries({ queryKey: ['dishList'] }); 
+            await navigate("/"); 
+        }, 
+        onError: () => {
+            window.alert( "Failed to save the data" ); 
+        } 
+    });
+    
+    const editRecipeMutation = useMutation({ 
+        mutationFn: async (finalData) => { 
+            const response = await axios.patch( `${API_URL}api/editRecipe`, finalData ); 
+            return response.data; 
+        }, 
+        onSuccess: async () => { 
+            reset(); 
+            setImage(""); 
+            setDishName(""); 
+            setEdit(false); 
+            await queryClient.invalidateQueries({ queryKey: ['dishes'] }); 
+            await queryClient.invalidateQueries({ queryKey: ['dishList'] }); 
+            await queryClient.invalidateQueries({ queryKey: ['recipe'] }); 
+            navigate("/"); 
+        }, 
+        onError: () => { 
+            window.alert( "Failed to update the data" ); 
+        } 
+    });
+    const submitData = (data)=> {
+        if(edit){
+            const finalData = {...data, dishUploader: image, ingredients:data.ingredients.replaceAll("\n",";"),method:data.method.replaceAll("\n",";"),tags:data.tags.replaceAll("\n",";")};
+            editRecipeMutation.mutate(finalData);
+        } else {
+            const finalData = {...data, dishUploader: image};
+            addRecipeMutation.mutate(finalData);
         }
     }
 
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-
             reader.readAsDataURL(file);
-
             reader.onload = () => resolve(reader.result);
-
             reader.onerror = reject;
         });
     };
-
 
     const uploadImage =async (e) => {
         const file= e.target.files[0];
         if(!file)
             return;
-        
         try{
             const base64 = await convertToBase64(file);
             setImage(base64);
-            
         } catch (error){
             window.error("Some error has occurred")
         }
     }
-    const fetchData = async (e)=>{
-        try{
-            setLoading(true);
-            setDishName(e.target.value);
-            const resData = await axios.post(`${API_URL}api/recipeData`,{dish:e.target.options[e.target.selectedIndex].text});
-            if(resData.status === 200){
-                const dishData = resData.data.dish;
-                setValue("dishName", dishData.dishName);
-                setValue("ingredients", dishData.ingredients.replaceAll(';', '\n'));
-                setValue("method", dishData.method.replaceAll(';', '\n'));
-                setValue("tags", dishData.tags.replaceAll(';', '\n'));
-                setValue("dishUploader", dishData.dishUploader);
-                setImage(getImage(dishData.dishUploader));
-                setDish(dishData);
-            } else {
-                setImage("");
-                reset();
-            } 
-        }catch (error){
-            window.alert("Unable to fetch the data");
-            reset();
-        } finally{
-            setLoading(false);
-        }
-    }
-    useEffect(()=>{
-        getDishList();
-    },[])    
-    const getDishList = async()=>{
-        try{
-            const dishList = await axios.get(`${API_URL}api/getList`)
-            if(dishList.status=== 200)
-                setDishList(dishList.data.dishes);
-        } catch (err){
-            window.alert("Unable to fetch the data");
-        }  
-    }       
+    // const fetchData = async (e)=>{
+    //     try{
+    //         setLoading(true);
+    //         setDishName(e.target.value);
+    //         const resData = await axios.post(`${API_URL}api/recipeData`,{dish:e.target.options[e.target.selectedIndex].text});
+    //         if(resData.status === 200){
+    //             const dishData = resData.data.dish;
+    //             setValue("dishName", dishData.dishName);
+    //             setValue("ingredients", dishData.ingredients.replaceAll(';', '\n'));
+    //             setValue("method", dishData.method.replaceAll(';', '\n'));
+    //             setValue("tags", dishData.tags.replaceAll(';', '\n'));
+    //             setValue("dishUploader", dishData.dishUploader);
+    //             setImage(getImage(dishData.dishUploader));
+    //             setDish(dishData);
+    //         } else {
+    //             setImage("");
+    //             reset();
+    //         } 
+    //     }catch (error){
+    //         window.alert("Unable to fetch the data");
+    //         reset();
+    //     } finally{
+    //         setLoading(false);
+    //     }
+    // }
+
+    const { data: recipeData, isLoading: recipeLoading, isError: recipeError } = useQuery({ 
+        queryKey: ['recipe', dishName], 
+        queryFn: async () => { 
+            const response = await axios.post( `${API_URL}api/recipeData`, { dish: dishName } ); 
+            const dish = response.data.dish;
+            setValue("dishName", dish.dishName);
+            setValue("ingredients", dish.ingredients.replaceAll(';', '\n'));
+            setValue("method", dish.method.replaceAll(';', '\n'));
+            setValue("tags", dish.tags.replaceAll(';', '\n'));
+            setValue("dishUploader", dish.dishUploader);
+            setImage(getImage(dish.dishUploader));
+            return dish;
+        }, 
+        enabled: edit && !!dishName 
+    });
+    
+    const { data: dishListData=[], isLoading: dishListLoading, isError: dishListError } = useQuery({ 
+        queryKey: ['dishList'], 
+        queryFn: async () => { 
+            const response = await axios.get( `${API_URL}api/getList` ); 
+            return response.data.dishes;
+        } 
+    });
+
+    useEffect(() => { 
+        if (!recipeData?.dish) 
+            return; 
+        const dishData = recipeData.dish; 
+        setValue( "dishName", dishData.dishName ); 
+        setValue( "ingredients", dishData.ingredients.replaceAll(';', '\n') ); 
+        setValue( "method", dishData.method.replaceAll(';', '\n') ); 
+        setValue( "tags", dishData.tags.replaceAll(';', '\n') ); 
+        setValue( "dishUploader", dishData.dishUploader ); 
+        setImage( getImage(dishData.dishUploader) ); setDish(dishData); 
+    }, [recipeData, setValue]);
     useEffect(()=>{
         if(!edit){
             setDish(null);
             setImage(null);
             setDishName("")
-        } else 
-            getDishList();
+        } 
         reset();
-    },[edit]);
-    
+    },[edit, reset]);
+
+    const loading = dishListLoading || recipeLoading || addRecipeMutation.isPending || editRecipeMutation.isPending;
+    if (dishListError) 
+        window.alert( "Unable to fetch dish list" ); 
+    if (recipeError) 
+        window.alert( "Unable to fetch recipe data" );
     return (
         <> 
             <i className="fa fa-arrow-left cursor-pointer" onClick={()=>navigate("/")}></i>
@@ -135,10 +168,10 @@ const AddRecipe = ({fetchDishes}) => {
                     <form onSubmit={handleSubmit(submitData)}>
                         <div className="select-container">
                             <i className="fa fa-pencil" onClick={()=>setEdit(!edit)} style={{"marginRight":"10px", "cursor": "pointer"}}></i>
-                            <select name="dishes" className="select-dish" onChange={(e)=>fetchData(e)} disabled={!edit} value={dishName}>
+                            <select name="dishes" className="select-dish" onChange={(e)=>setDishName(e.target.value)} disabled={!edit} value={dishName}>
                                 <option value="" disabled selected>Select Dish</option>
-                                {dishList && dishList.map((dish)=>(
-                                    <option key={crypto.randomUUID()}value={dish.dishName.toLowerCase().replaceAll(' ','-')} >{dish.dishName}</option> 
+                                {dishListData && dishListData.map((dish)=>(
+                                    <option key={crypto.randomUUID()}value={dish.dishName} >{dish.dishName}</option> 
                                 ))}
                             </select>
                         </div>
@@ -159,15 +192,15 @@ const AddRecipe = ({fetchDishes}) => {
                                         required: "Please provide the valid dish name",
                                     })}/>
                                     {errors.dishName && <span className="error">{errors.dishName.message}</span>}
-                                    <textarea name="ingredients" className="textArea-form" placeholder="Enter ingredients here, separate them by semi-colon" {...register("ingredients",{
+                                    <textarea name="ingredients" className={`${edit ? "overflowYauto": ""} textArea-form`} placeholder="Enter ingredients here, separate them by semi-colon" {...register("ingredients",{
                                         required: "Please enter the ingredients"
                                     })} onInput={resizeTextArea}></textarea>
                                     {errors.ingredients && <span className="error">{errors.ingredients.message}</span>}
-                                    <textarea name="method" className="textArea-form" placeholder="Enter steps here, separate them by semi-colon" {...register("method",{
+                                    <textarea name="method" className={`${edit ? "overflowYauto": ""} textArea-form `}placeholder="Enter steps here, separate them by semi-colon" {...register("method",{
                                         required: "Please enter the method"
                                     })} onInput={resizeTextArea}></textarea>
                                     {errors.method && <span className="error">{errors.method.message}</span>}
-                                    <textarea name="tags" className="textArea-form" placeholder="Enter categories here, separate them by semi-colon" {...register("tags",{
+                                    <textarea name="tags" className={`${edit ? "overflowYauto": ""} textArea-form`} placeholder="Enter categories here, separate them by semi-colon" {...register("tags",{
                                         required: "Please enter the categories of this food"
                                     })} onInput={resizeTextArea}></textarea>
                                     {errors.tags && <span className="error">{errors.tags.message}</span>}

@@ -6,7 +6,7 @@ import DishesList from "./utils/DishesList.jsx";
 import {getImage} from './utils/ImageLoader';
 
 const Dish = () => {
-    const {dishes,setDishes} = useContext(DishesList);
+    const {dishes} = useContext(DishesList);
     const { name } = useParams();
     const { speak, pause, resume, stop } = useSpeech();
     const [player, setPlayer] = useState({
@@ -49,7 +49,7 @@ const Dish = () => {
         <div className="dish row">
             <i className="fa fa-arrow-left cursor-pointer" onClick={handleClick}></i>
             {dishes.map((dish) => dish.dishName === name ? (
-                <div key={dish.name}>
+                <div key={dish._id}>
                     <h2 className="dish-name">{dish.dishName}</h2>
                     <div className="dish-box row d-flex" style={{borderRadius: "30px", alignItems: "center"}}>
                         <div className="col-md-6 col-sm-12 image-container">
