@@ -17,7 +17,11 @@
 @media screen and (max-width: 991px){
     .cooking-form{
         max-width: 800px !important;
-        width: 100%;
+        width: 100% !important;
+    }
+    .iamgeContainer{
+        padding: 100px 30px;
+        margin: 0 auto;
     }
 }
 .cooking-form{
@@ -30,8 +34,9 @@
 .cooking-form textarea{
     min-height: 100px;
     width: 100%;
-    resize: vertical;
-    overflow-y: hidden;
+    overflow: hidden;
+    resize: none;
+    box-sizing: border-box;
 }
 .cooking-form input, .cooking-form textarea{
     padding: 10px;
@@ -72,9 +77,7 @@ body[data-theme="light"] form button:hover{
     object-fit: cover;
 }
 @media all and (max-width: 991px){
-    .iamgeContainer{
-        padding: 100px 0px;
-    }
+    
 }
 .error{
     display: block;

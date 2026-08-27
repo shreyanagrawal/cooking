@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import imageCompression from "browser-image-compression"
 import ("../assets/styles/addrecipe.css")
 import {getImage} from './utils/ImageLoader'; 
+import { resizeTextArea } from '../assets/scripts/script.js';
 const API_URL = import.meta.env.VITE_API_URL;
 const AddRecipe = ({fetchDishes}) => {
     const [dish,setDish] = useState(null);
@@ -158,17 +159,17 @@ const AddRecipe = ({fetchDishes}) => {
                                         required: "Please provide the valid dish name",
                                     })}/>
                                     {errors.dishName && <span className="error">{errors.dishName.message}</span>}
-                                    <textarea name="ingredients" className="textArea-form" style={{"height": "100%"}} placeholder="Enter ingredients here, separate them by semi-colon" {...register("ingredients",{
+                                    <textarea name="ingredients" className="textArea-form" placeholder="Enter ingredients here, separate them by semi-colon" {...register("ingredients",{
                                         required: "Please enter the ingredients"
-                                    })}></textarea>
+                                    })} onInput={resizeTextArea}></textarea>
                                     {errors.ingredients && <span className="error">{errors.ingredients.message}</span>}
-                                    <textarea name="method" className="textArea-form" style={{"height": "100%"}} placeholder="Enter steps here, separate them by semi-colon" {...register("method",{
+                                    <textarea name="method" className="textArea-form" placeholder="Enter steps here, separate them by semi-colon" {...register("method",{
                                         required: "Please enter the method"
-                                    })}></textarea>
+                                    })} onInput={resizeTextArea}></textarea>
                                     {errors.method && <span className="error">{errors.method.message}</span>}
-                                    <textarea name="tags" className="textArea-form" style={{"height": "100%"}} placeholder="Enter categories here, separate them by semi-colon" {...register("tags",{
+                                    <textarea name="tags" className="textArea-form" placeholder="Enter categories here, separate them by semi-colon" {...register("tags",{
                                         required: "Please enter the categories of this food"
-                                    })}></textarea>
+                                    })} onInput={resizeTextArea}></textarea>
                                     {errors.tags && <span className="error">{errors.tags.message}</span>}
                                 </div>
                             </div>
